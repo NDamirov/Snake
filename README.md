@@ -2,14 +2,15 @@
 Snake game
 
 Console version of snake game.
-##Build
+
+## Build
 ```sh
 mkdir build
 cd build
 cmake ..
 make
 ```
-##Run
+## Run
 ```sh
 ./snake
 ```
