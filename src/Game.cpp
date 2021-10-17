@@ -2,20 +2,19 @@
 
 #include <chrono>
 #include <thread>
-#include <unistd.h>
 
 Game::Game(size_t field_w, size_t field_h)
     : snake(10, 10, field_w, field_h), field(field_w, field_h),
       interface(field_w, field_h), state(State::IN_PROGRESS), score(1) {
   interface.PrintPos(field.GetBonus().first, field.GetBonus().second, "o");
+  interface.PrintPos(0, field.width, std::string("Score: " + std::to_string(score)).c_str());
 }
 
 void Game::Run() {
   while (state == State::IN_PROGRESS) {
     auto start_time = std::chrono::system_clock::now();
     while (std::chrono::duration<double>(std::chrono::system_clock::now() -
-                                         start_time)
-               .count() < delay) {
+                                         start_time).count() < delay) {
       ParseKey();
     }
     MakeStep();
@@ -53,6 +52,7 @@ void Game::MakeStep() {
     interface.PrintPos(old_tail.first, old_tail.second, ".");
   } else {
     ++score;
+    interface.PrintPos(0, field.width, std::string("Score: " + std::to_string(score)).c_str());
     field.NewBonus();
   }
   interface.PrintPos(field.GetBonus().first, field.GetBonus().second, "o");
